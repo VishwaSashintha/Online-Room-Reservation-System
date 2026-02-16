@@ -15,29 +15,23 @@
             <div class="login-container">
                 <div class="login-card">
                     <div class="login-header" style="background: var(--error-red);">
-                        <h1>⚠️ Error</h1>
+                        <h1>Error</h1>
                         <p>Ocean View Resort - Reservation Management System</p>
                     </div>
-
                     <div class="login-body">
                         <div class="alert alert-error">
                             <strong>Error:</strong>
                             <%= errorMessage %>
                         </div>
-
                         <div style="margin-top: 24px;">
                             <p style="color: var(--text-light); margin-bottom: 16px;">
                                 We apologize for the inconvenience. Please try one of the following options:
                             </p>
-
                             <div style="display: flex; flex-direction: column; gap: 12px;">
                                 <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
-                                <a href="dashboard.jsp" class="btn btn-primary">Return to Dashboard</a>
-                                <a href="login.jsp" class="btn"
-                                    style="background: var(--text-light); color: var(--white);">Login Page</a>
+                                <a href="login.jsp" class="btn btn-primary">Return to Login</a>
                             </div>
                         </div>
-
                         <div
                             style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 13px; color: var(--text-light);">
                             <strong>Need Help?</strong><br>
@@ -47,7 +41,6 @@
                     </div>
                 </div>
             </div>
-
             <script src="js/validation.js"></script>
         </body>
 

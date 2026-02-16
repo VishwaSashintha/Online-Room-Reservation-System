@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <%@ page import="model.Reservation" %>
-        <% // Check if user is logged in if (session==null || session.getAttribute("user")==null) {
-            response.sendRedirect("login.jsp"); return; } String username=(String) session.getAttribute("username");
-            String role=(String) session.getAttribute("role"); String errorMessage=(String)
-            request.getAttribute("errorMessage"); String successMessage=(String) request.getAttribute("successMessage");
-            Reservation reservation=(Reservation) request.getAttribute("reservation"); %>
+        <% if (session==null || session.getAttribute("user")==null) { response.sendRedirect("login.jsp"); return; }
+            String username=(String) session.getAttribute("username"); String role=(String)
+            session.getAttribute("role"); String errorMessage=(String) request.getAttribute("errorMessage"); String
+            successMessage=(String) request.getAttribute("successMessage"); model.Reservation
+            reservation=(model.Reservation) request.getAttribute("reservation"); %>
             <!DOCTYPE html>
             <html lang="en">
 
@@ -16,191 +16,151 @@
             </head>
 
             <body>
-                <!-- Header -->
-                <div class="header">
-                    <div class="header-left">
-                        <div class="logo">Ocean View Resort</div>
-                        <div class="system-name">Reservation Management System</div>
-                    </div>
-                    <div class="header-right">
-                        <div class="user-info">
-                            Welcome, <strong>
-                                <%= username %>
-                            </strong> (<%= role %>)
+                <jsp:include page="includes/header.jsp" />
+                <div class="dashboard-wrapper">
+                    <jsp:include page="includes/sidebar.jsp" />
+                    <div class="main-content">
+                        <div class="content-header">
+                            <h2>Update Reservation</h2>
+                            <p>Modify existing guest bookings</p>
                         </div>
-                        <a href="LogoutServlet" class="btn-logout">Logout</a>
-                    </div>
-                </div>
-
-                <!-- Sidebar -->
-                <div class="sidebar">
-                    <ul class="sidebar-menu">
-                        <li><a href="dashboard.jsp">📊 Dashboard</a></li>
-                        <li><a href="addReservation.jsp">➕ Add Reservation</a></li>
-                        <li><a href="searchReservation.jsp">🔍 Search Reservation</a></li>
-                        <li><a href="updateReservation.jsp" class="active">✏️ Update Reservation</a></li>
-                        <% if ("ADMIN".equals(role)) { %>
-                            <li><a href="deleteReservation.jsp">❌ Delete Reservation</a></li>
-                            <% } %>
-                                <li><a href="help.jsp">📖 Help</a></li>
-                    </ul>
-                </div>
-
-                <!-- Main Content -->
-                <div class="main-content">
-                    <div class="content-header">
-                        <h2>Update Reservation</h2>
-                        <p>Modify existing reservation details</p>
-                    </div>
-
-                    <% if (reservation==null) { %>
-                        <!-- Search Form -->
                         <div class="card">
                             <% if (errorMessage !=null) { %>
                                 <div class="alert alert-error">
                                     <%= errorMessage %>
                                 </div>
                                 <% } %>
-
-                                    <form action="UpdateReservationServlet" method="get">
-                                        <input type="hidden" name="action" value="load">
-                                        <div class="form-row">
-                                            <div class="form-group">
-                                                <label for="reservationId">Reservation ID *</label>
-                                                <input type="number" id="reservationId" name="reservationId"
-                                                    placeholder="Enter reservation ID to update" required>
-                                            </div>
+                                    <% if (successMessage !=null) { %>
+                                        <div class="alert alert-success">
+                                            <%= successMessage %>
                                         </div>
-
-                                        <div class="form-actions">
-                                            <button type="submit" class="btn btn-primary">Load Reservation</button>
-                                            <a href="dashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
-                                        </div>
-                                    </form>
-                        </div>
-                        <% } else { %>
-                            <!-- Update Form -->
-                            <div class="card">
-                                <% if (errorMessage !=null) { %>
-                                    <div class="alert alert-error">
-                                        <%= errorMessage %>
-                                    </div>
-                                    <% } %>
-
-                                        <% if (successMessage !=null) { %>
-                                            <div class="alert alert-success">
-                                                <%= successMessage %>
-                                            </div>
-                                            <% } %>
-
-                                                <div id="formError" style="display: none;"></div>
-
-                                                <form action="UpdateReservationServlet" method="post"
-                                                    onsubmit="return validateReservationForm(event)">
+                                        <% } %>
+                                            <% if (reservation==null) { %>
+                                                <form action="UpdateReservationServlet" method="get">
+                                                    <input type="hidden" name="action" value="load">
                                                     <div class="form-row">
-                                                        <div class="form-group">
+                                                        <div class="form-group" style="flex: 1;">
                                                             <label for="reservationId">Reservation ID *</label>
                                                             <input type="number" id="reservationId" name="reservationId"
-                                                                value="<%= reservation.getReservationId() %>" readonly
-                                                                style="background-color: var(--light-bg);">
+                                                                placeholder="Enter reservation ID to update" required>
                                                         </div>
-
-                                                        <div class="form-group">
-                                                            <label for="guestName">Guest Name *</label>
-                                                            <input type="text" id="guestName" name="guestName"
-                                                                value="<%= reservation.getGuestName() %>" required>
+                                                        <div class="form-group"
+                                                            style="flex: 0 0 200px; align-self: flex-end;">
+                                                            <button type="submit" class="btn btn-primary"
+                                                                style="width: 100%;">Load Reservation</button>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="form-row">
-                                                        <div class="form-group">
-                                                            <label for="address">Address *</label>
-                                                            <input type="text" id="address" name="address"
-                                                                value="<%= reservation.getAddress() %>" required>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="contact">Contact Number *</label>
-                                                            <input type="text" id="contact" name="contact"
-                                                                value="<%= reservation.getContact() %>" maxlength="10"
-                                                                required>
-                                                            <small id="contactError" style="display: none;"></small>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-row">
-                                                        <div class="form-group">
-                                                            <label for="roomType">Room Type *</label>
-                                                            <select id="roomType" name="roomType" required>
-                                                                <option value="Standard" <%="Standard"
-                                                                    .equals(reservation.getRoomType()) ? "selected" : ""
-                                                                    %>>Standard - LKR 8,000/night</option>
-                                                                <option value="Deluxe" <%="Deluxe"
-                                                                    .equals(reservation.getRoomType()) ? "selected" : ""
-                                                                    %>>Deluxe - LKR 12,000/night</option>
-                                                                <option value="Suite" <%="Suite"
-                                                                    .equals(reservation.getRoomType()) ? "selected" : ""
-                                                                    %>>Suite - LKR 20,000/night</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="checkIn">Check-in Date *</label>
-                                                            <input type="date" id="checkIn" name="checkIn"
-                                                                value="<%= reservation.getCheckIn() %>" required>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="form-row">
-                                                        <div class="form-group">
-                                                            <label for="checkOut">Check-out Date *</label>
-                                                            <input type="date" id="checkOut" name="checkOut"
-                                                                value="<%= reservation.getCheckOut() %>" required>
-                                                            <small id="dateError" style="display: none;"></small>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="totalBill">Total Bill (LKR) *</label>
-                                                            <input type="number" id="totalBill" name="totalBill"
-                                                                value="<%= reservation.getTotalBill() %>" step="0.01"
-                                                                readonly
-                                                                style="background-color: var(--light-bg); font-weight: 600; color: var(--accent-orange);">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Billing Summary -->
-                                                    <div id="billingSummary" class="billing-summary"
-                                                        style="display: none;">
-                                                        <!-- Will be populated by JavaScript -->
-                                                    </div>
-
-                                                    <div class="form-actions">
-                                                        <button type="submit" class="btn btn-success">Update
-                                                            Reservation</button>
-                                                        <a href="updateReservation.jsp" class="btn btn-secondary">Load
-                                                            Another</a>
-                                                        <a href="dashboard.jsp" class="btn"
-                                                            style="background: var(--text-light); color: var(--white);">Cancel</a>
                                                     </div>
                                                 </form>
-                            </div>
-                            <% } %>
-
-                                <!-- Footer -->
-                                <div class="footer">
-                                    © 2026 Ocean View Resort | Galle
-                                </div>
+                                                <% } else { %>
+                                                    <form action="UpdateReservationServlet" method="post">
+                                                        <input type="hidden" name="reservationId"
+                                                            value="<%= reservation.getReservationId() %>">
+                                                        <div class="form-row">
+                                                            <div class="form-group">
+                                                                <label>Reservation ID</label>
+                                                                <input type="text"
+                                                                    value="<%= reservation.getReservationId() %>"
+                                                                    disabled>
+                                                                <small>ID cannot be changed</small>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="guestName">Guest Name *</label>
+                                                                <input type="text" id="guestName" name="guestName"
+                                                                    value="<%= reservation.getGuestName() %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group">
+                                                                <label for="address">Address *</label>
+                                                                <input type="text" id="address" name="address"
+                                                                    value="<%= reservation.getAddress() %>" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="contact">Contact Number *</label>
+                                                                <input type="text" id="contact" name="contact"
+                                                                    value="<%= reservation.getContact() %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row">
+                                                            <div class="form-group">
+                                                                <label for="roomType">Room Type *</label>
+                                                                <select id="roomType" name="roomType" required
+                                                                    onchange="calculateBill()">
+                                                                    <option value="Standard" <%="Standard"
+                                                                        .equals(reservation.getRoomType()) ? "selected"
+                                                                        : "" %>>Standard (LKR 8,000)</option>
+                                                                    <option value="Deluxe" <%="Deluxe"
+                                                                        .equals(reservation.getRoomType()) ? "selected"
+                                                                        : "" %>>Deluxe (LKR 12,000)</option>
+                                                                    <option value="Suite" <%="Suite"
+                                                                        .equals(reservation.getRoomType()) ? "selected"
+                                                                        : "" %>>Suite (LKR 20,000)</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="checkIn">Check-in Date *</label>
+                                                                <input type="date" id="checkIn" name="checkIn"
+                                                                    value="<%= reservation.getCheckIn() %>" required
+                                                                    onchange="calculateBill()">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="checkOut">Check-out Date *</label>
+                                                                <input type="date" id="checkOut" name="checkOut"
+                                                                    value="<%= reservation.getCheckOut() %>" required
+                                                                    onchange="calculateBill()">
+                                                            </div>
+                                                        </div>
+                                                        <div class="bill-summary" id="billSummary">
+                                                            <h4>Current Billing</h4>
+                                                            <div id="billDetails">
+                                                                <p>Number of Nights: <strong id="nightCount">--</strong>
+                                                                </p>
+                                                            </div>
+                                                            <div class="total-bill">Total: LKR <span
+                                                                    id="totalBillAmount">
+                                                                    <%= String.format("%,.2f",
+                                                                        reservation.getTotalBill()) %>
+                                                                </span></div>
+                                                        </div>
+                                                        <div class="form-actions">
+                                                            <button type="submit" class="btn btn-primary">Update
+                                                                Reservation</button>
+                                                            <a href="updateReservation.jsp"
+                                                                class="btn btn-secondary">Cancel</a>
+                                                        </div>
+                                                    </form>
+                                                    <% } %>
+                        </div>
+                    </div>
                 </div>
-
                 <script src="js/validation.js"></script>
-                <% if (reservation !=null) { %>
-                    <script>
-                        // Trigger initial bill calculation on page load
-                        window.addEventListener('load', function () {
+                <script>
+                    window.onload = function () {
+                        if (document.getElementById('roomType')) {
                             calculateBill();
-                        });
-                    </script>
-                    <% } %>
+                        }
+                    };
+                    function calculateBill() {
+                        const roomType = document.getElementById('roomType').value;
+                        const checkIn = document.getElementById('checkIn').value;
+                        const checkOut = document.getElementById('checkOut').value;
+                        if (roomType && checkIn && checkOut) {
+                            const date1 = new Date(checkIn);
+                            const date2 = new Date(checkOut);
+                            if (date2 > date1) {
+                                const diffTime = Math.abs(date2 - date1);
+                                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                let rate = 0;
+                                if (roomType === "Standard") rate = 8000;
+                                else if (roomType === "Deluxe") rate = 12000;
+                                else if (roomType === "Suite") rate = 20000;
+                                const total = diffDays * rate;
+                                document.getElementById('nightCount').textContent = diffDays;
+                                document.getElementById('totalBillAmount').textContent = total.toLocaleString(undefined, { minimumFractionDigits: 2 });
+                            }
+                        }
+                    }
+                </script>
             </body>
 
             </html>

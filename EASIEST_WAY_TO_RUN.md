@@ -76,13 +76,25 @@ Type `exit` when done.
 
 ### **STEP 4: Start Tomcat and Open Browser**
 
-1. **Double-click: `start-tomcat.bat`**
+1. **Double-click: `start-tomcat.bat`** (or use `C:\xampp\tomcat\bin\startup.bat`)
 2. A Tomcat window will open - **DON'T CLOSE IT!**
 3. Wait 10-20 seconds
-4. Open browser and go to: **http://localhost:8080/Online-Room-Reservation-System/**
-5. Login:
-   - Username: `admin`
-   - Password: `admin123`
+4. Open browser and go to: **[http://localhost:8080/Online-Room-Reservation-System/](http://localhost:8080/Online-Room-Reservation-System/)**
+5. Login with your desired role:
+   - **Admin Account**: Username: `admin`, Password: `admin123` (Access to Reports/Users)
+   - **Staff Account**: Username: `staff`, Password: `staff123` (Operational view only)
+
+---
+
+## 👥 Role Differences
+
+| Feature | Admin | Staff |
+| :--- | :---: | :---: |
+| View Dashboards | ✅ (Full Stats) | ✅ (Daily Ops) |
+| Add/Update/Search | ✅ | ✅ |
+| Delete Reservation | ✅ | ❌ |
+| Manage Users | ✅ | ❌ |
+| View Reports | ✅ | ❌ |
 
 ---
 

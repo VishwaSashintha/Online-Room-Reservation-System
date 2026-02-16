@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <%@ page import="model.Reservation" %>
-        <% // Check if user is logged in if (session==null || session.getAttribute("user")==null) {
-            response.sendRedirect("login.jsp"); return; } String username=(String) session.getAttribute("username");
-            String role=(String) session.getAttribute("role"); // Check if user is admin if (!"ADMIN".equals(role)) {
-            response.sendRedirect("error.jsp"); return; } String errorMessage=(String)
-            request.getAttribute("errorMessage"); String successMessage=(String) request.getAttribute("successMessage");
-            Reservation reservation=(Reservation) request.getAttribute("reservation"); %>
+        <% if (session==null || session.getAttribute("user")==null) { response.sendRedirect("login.jsp"); return; }
+            String username=(String) session.getAttribute("username"); String role=(String)
+            session.getAttribute("role"); if (!"ADMIN".equals(role)) { response.sendRedirect("staffDashboard.jsp");
+            return; } String errorMessage=(String) request.getAttribute("errorMessage"); String successMessage=(String)
+            request.getAttribute("successMessage"); model.Reservation reservation=(model.Reservation)
+            request.getAttribute("reservation"); %>
             <!DOCTYPE html>
             <html lang="en">
 
@@ -17,7 +17,6 @@
             </head>
 
             <body>
-                <!-- Header -->
                 <div class="header">
                     <div class="header-left">
                         <div class="logo">Ocean View Resort</div>
@@ -32,40 +31,32 @@
                         <a href="LogoutServlet" class="btn-logout">Logout</a>
                     </div>
                 </div>
-
-                <!-- Sidebar -->
                 <div class="sidebar">
                     <ul class="sidebar-menu">
-                        <li><a href="dashboard.jsp">📊 Dashboard</a></li>
-                        <li><a href="addReservation.jsp">➕ Add Reservation</a></li>
-                        <li><a href="searchReservation.jsp">🔍 Search Reservation</a></li>
-                        <li><a href="updateReservation.jsp">✏️ Update Reservation</a></li>
-                        <li><a href="deleteReservation.jsp" class="active">❌ Delete Reservation</a></li>
-                        <li><a href="help.jsp">📖 Help</a></li>
+                        <li><a href="dashboard.jsp">Dashboard</a></li>
+                        <li><a href="addReservation.jsp">Add Reservation</a></li>
+                        <li><a href="searchReservation.jsp">Search Reservation</a></li>
+                        <li><a href="updateReservation.jsp">Update Reservation</a></li>
+                        <li><a href="deleteReservation.jsp" class="active">Delete Reservation</a></li>
+                        <li><a href="help.jsp">Help</a></li>
                     </ul>
                 </div>
-
-                <!-- Main Content -->
                 <div class="main-content">
                     <div class="content-header">
                         <h2>Delete Reservation</h2>
                         <p>Remove a reservation from the system (Admin Only)</p>
                     </div>
-
                     <% if (reservation==null && successMessage==null) { %>
-                        <!-- Search Form -->
                         <div class="card">
                             <% if (errorMessage !=null) { %>
                                 <div class="alert alert-error">
                                     <%= errorMessage %>
                                 </div>
                                 <% } %>
-
                                     <div class="alert alert-info">
-                                        <strong>⚠️ Warning:</strong> This action is irreversible. Only administrators
+                                        <strong>Warning:</strong> This action is irreversible. Only administrators
                                         can delete reservations.
                                     </div>
-
                                     <form action="DeleteReservationServlet" method="get">
                                         <input type="hidden" name="action" value="load">
                                         <div class="form-row">
@@ -75,7 +66,6 @@
                                                     placeholder="Enter reservation ID to delete" required>
                                             </div>
                                         </div>
-
                                         <div class="form-actions">
                                             <button type="submit" class="btn btn-primary">Load Reservation</button>
                                             <a href="dashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
@@ -83,17 +73,14 @@
                                     </form>
                         </div>
                         <% } else if (reservation !=null) { %>
-                            <!-- Confirmation -->
                             <div class="card">
                                 <div class="card-header">
                                     <h3>Confirm Deletion</h3>
                                 </div>
-
                                 <div class="alert alert-error">
-                                    <strong>⚠️ Warning:</strong> You are about to permanently delete this reservation.
+                                    <strong>Warning:</strong> You are about to permanently delete this reservation.
                                     This action cannot be undone!
                                 </div>
-
                                 <div class="table-container">
                                     <table>
                                         <thead>
@@ -155,38 +142,31 @@
                                         </tbody>
                                     </table>
                                 </div>
-
                                 <form action="DeleteReservationServlet" method="post" onsubmit="return confirmDelete()">
                                     <input type="hidden" name="reservationId"
                                         value="<%= reservation.getReservationId() %>">
-
                                     <div class="form-actions" style="margin-top: 24px;">
                                         <button type="submit" class="btn btn-danger">Confirm Delete</button>
                                         <a href="deleteReservation.jsp" class="btn"
-                                            style="background: var(--secondary-blue); color: var(--white);">Cancel</a>
+                                            style="background: var(--accent-orange); color: var(--white); font-weight: 600;">Cancel</a>
                                     </div>
                                 </form>
                             </div>
                             <% } else if (successMessage !=null) { %>
-                                <!-- Success Message -->
                                 <div class="card">
                                     <div class="alert alert-success">
                                         <%= successMessage %>
                                     </div>
-
                                     <div class="form-actions">
                                         <a href="deleteReservation.jsp" class="btn btn-primary">Delete Another</a>
                                         <a href="dashboard.jsp" class="btn btn-secondary">Back to Dashboard</a>
                                     </div>
                                 </div>
                                 <% } %>
-
-                                    <!-- Footer -->
                                     <div class="footer">
                                         © 2026 Ocean View Resort | Galle
                                     </div>
                 </div>
-
                 <script src="js/validation.js"></script>
             </body>
 
