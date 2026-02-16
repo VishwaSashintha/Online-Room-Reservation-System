@@ -27,7 +27,7 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Active Bookings</h4>
-                                        <div class="number">18</div>
+                                        <div class="number">0</div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -36,7 +36,7 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Today's Check-ins</h4>
-                                        <div class="number">5</div>
+                                        <div class="number">0</div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -45,7 +45,7 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Today's Check-outs</h4>
-                                        <div class="number">3</div>
+                                        <div class="number">0</div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>

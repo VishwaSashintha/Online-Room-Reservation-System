@@ -27,8 +27,8 @@
                                         <div class="summary-card-content">
                                             <div class="summary-card-info">
                                                 <h4>Total Revenue</h4>
-                                                <div class="number" style="font-size: 24px;">LKR 112K</div>
-                                                <small style="color: var(--success-green);">↑ +15% this month</small>
+                                                <div class="number" style="font-size: 24px;">LKR 0</div>
+                                                <small style="color: var(--text-light);">No data this month</small>
                                             </div>
                                             <div class="summary-card-icon"></div>
                                         </div>
@@ -37,7 +37,7 @@
                                         <div class="summary-card-content">
                                             <div class="summary-card-info">
                                                 <h4>Total Bookings</h4>
-                                                <div class="number">3</div>
+                                                <div class="number">0</div>
                                                 <small style="color: var(--text-light);">All time</small>
                                             </div>
                                             <div class="summary-card-icon"></div>
@@ -47,8 +47,8 @@
                                         <div class="summary-card-content">
                                             <div class="summary-card-info">
                                                 <h4>Occupancy Rate</h4>
-                                                <div class="number">13%</div>
-                                                <small style="color: var(--text-light);">3 of 23 rooms</small>
+                                                <div class="number">0%</div>
+                                                <small style="color: var(--text-light);">0 of 23 rooms</small>
                                             </div>
                                             <div class="summary-card-icon"></div>
                                         </div>
@@ -57,7 +57,7 @@
                                         <div class="summary-card-content">
                                             <div class="summary-card-info">
                                                 <h4>Avg. Booking Value</h4>
-                                                <div class="number" style="font-size: 24px;">LKR 37K</div>
+                                                <div class="number" style="font-size: 24px;">LKR 0</div>
                                                 <small style="color: var(--text-light);">Per reservation</small>
                                             </div>
                                             <div class="summary-card-icon"></div>
@@ -72,35 +72,35 @@
                                         <div class="revenue-item">
                                             <div class="revenue-header">
                                                 <span class="revenue-type">Standard</span>
-                                                <span class="revenue-amount">LKR 16,000</span>
+                                                <span class="revenue-amount">LKR 0</span>
                                             </div>
                                             <div class="revenue-bar">
                                                 <div class="revenue-fill"
-                                                    style="width: 14%; background: var(--secondary-blue);"></div>
+                                                    style="width: 0%; background: var(--secondary-blue);"></div>
                                             </div>
-                                            <small class="revenue-details">1 booking • 2 nights</small>
+                                            <small class="revenue-details">0 bookings • 0 nights</small>
                                         </div>
                                         <div class="revenue-item">
                                             <div class="revenue-header">
                                                 <span class="revenue-type">Deluxe</span>
-                                                <span class="revenue-amount">LKR 36,000</span>
+                                                <span class="revenue-amount">LKR 0</span>
                                             </div>
                                             <div class="revenue-bar">
                                                 <div class="revenue-fill"
-                                                    style="width: 32%; background: var(--accent-orange);"></div>
+                                                    style="width: 0%; background: var(--accent-orange);"></div>
                                             </div>
-                                            <small class="revenue-details">1 booking • 3 nights</small>
+                                            <small class="revenue-details">0 bookings • 0 nights</small>
                                         </div>
                                         <div class="revenue-item">
                                             <div class="revenue-header">
                                                 <span class="revenue-type">Suite</span>
-                                                <span class="revenue-amount">LKR 60,000</span>
+                                                <span class="revenue-amount">LKR 0</span>
                                             </div>
                                             <div class="revenue-bar">
                                                 <div class="revenue-fill"
-                                                    style="width: 54%; background: var(--success-green);"></div>
+                                                    style="width: 0%; background: var(--success-green);"></div>
                                             </div>
-                                            <small class="revenue-details">1 booking • 3 nights</small>
+                                            <small class="revenue-details">0 bookings • 0 nights</small>
                                         </div>
                                     </div>
                                 </div>
@@ -124,37 +124,8 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>1001</td>
-                                                    <td>John Doe</td>
-                                                    <td>Deluxe</td>
-                                                    <td>2026-02-20</td>
-                                                    <td>2026-02-23</td>
-                                                    <td>3</td>
-                                                    <td>LKR 36,000</td>
-                                                    <td><span class="status-badge status-confirmed">CONFIRMED</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1002</td>
-                                                    <td>Jane Smith</td>
-                                                    <td>Suite</td>
-                                                    <td>2026-02-25</td>
-                                                    <td>2026-02-28</td>
-                                                    <td>3</td>
-                                                    <td>LKR 60,000</td>
-                                                    <td><span class="status-badge status-confirmed">CONFIRMED</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1003</td>
-                                                    <td>Mike Johnson</td>
-                                                    <td>Standard</td>
-                                                    <td>2026-02-18</td>
-                                                    <td>2026-02-20</td>
-                                                    <td>2</td>
-                                                    <td>LKR 16,000</td>
-                                                    <td><span class="status-badge status-confirmed">CONFIRMED</span>
-                                                    </td>
+                                                    <td colspan="8" style="text-align: center; padding: 20px;">No recent
+                                                        reservations found</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -175,7 +146,7 @@
                                         <div class="stat-item">
                                             <div class="stat-icon">✅</div>
                                             <div class="stat-info">
-                                                <div class="stat-value">3</div>
+                                                <div class="stat-value">0</div>
                                                 <div class="stat-label">Active Bookings</div>
                                             </div>
                                         </div>

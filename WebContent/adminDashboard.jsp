@@ -27,7 +27,7 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Total Reservations</h4>
-                                        <div class="number">124</div>
+                                        <div class="number">0</div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -36,7 +36,7 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Active Bookings</h4>
-                                        <div class="number">42</div>
+                                        <div class="number">0</div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -54,7 +54,7 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Total Revenue</h4>
-                                        <div class="number" style="font-size: 24px;">LKR 842,500</div>
+                                        <div class="number" style="font-size: 24px;">LKR 0</div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -77,18 +77,8 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>#OV-1024</td>
-                                            <td>Vishwa Sashintha</td>
-                                            <td class="text-blue">Deluxe Suite</td>
-                                            <td>2026-02-18</td>
-                                            <td><span class="status-badge status-confirmed">Confirmed</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>#OV-1023</td>
-                                            <td>John Doe</td>
-                                            <td class="text-blue">Standard</td>
-                                            <td>2026-02-17</td>
-                                            <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                                            <td colspan="5" style="text-align: center; padding: 20px;">No recent
+                                                reservations found</td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -88,11 +88,7 @@ INSERT INTO rooms (room_number, type_id, status) VALUES
 ('301', 3, 'AVAILABLE'), ('302', 3, 'AVAILABLE'), ('303', 3, 'AVAILABLE'), 
 ('304', 3, 'AVAILABLE'), ('305', 3, 'AVAILABLE');
 
--- Insert sample reservations
-INSERT INTO reservations (reservation_id, guest_name, address, contact, room_type, check_in, check_out, total_bill, status, created_by) VALUES
-(1001, 'John Doe', '123 Main St, Colombo', '0771234567', 'Deluxe', '2026-02-20', '2026-02-23', 36000.00, 'CONFIRMED', 1),
-(1002, 'Jane Smith', '456 Beach Rd, Galle', '0779876543', 'Suite', '2026-02-25', '2026-02-28', 60000.00, 'CONFIRMED', 1),
-(1003, 'Mike Johnson', '789 Hill St, Kandy', '0771112222', 'Standard', '2026-02-18', '2026-02-20', 16000.00, 'CONFIRMED', 2);
+-- Sample reservations removed for clean start
 
 -- Create indexes for better performance
 CREATE INDEX idx_reservation_dates ON reservations(check_in, check_out);
