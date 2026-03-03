@@ -1,144 +1,267 @@
 package dao;
+
 import model.User;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserDAO {
+
+    private static final String BASE_URL = "http://localhost:8080/Online-Room-Reservation-System/api/users";
+
     public User authenticateUser(String username, String password) {
-        User user = null;
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
         try {
-            conn = DBConnection.getConnection();
-            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, username);
-            pstmt.setString(2, password);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                user = new User();
-                user.setUserId(rs.getInt("user_id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setRole(rs.getString("role"));
-                user.setFullName(rs.getString("full_name"));
-                user.setEmail(rs.getString("email"));
-                user.setPhone(rs.getString("phone"));
-                user.setStatus(rs.getString("status"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error authenticating user: " + e.getMessage());
+            String response = sendGet("action=authenticate&username=" + encode(username)
+                    + "&password=" + encode(password));
+            if (response == null || response.trim().equals("null"))
+                return null;
+            return parseUser(response);
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            closeResources(rs, pstmt, conn);
+            return null;
         }
-        return user;
     }
+
     public User getUserByUsername(String username) {
-        User user = null;
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
         try {
-            conn = DBConnection.getConnection();
-            String sql = "SELECT * FROM users WHERE username = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, username);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                user = new User();
-                user.setUserId(rs.getInt("user_id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setRole(rs.getString("role"));
-                user.setFullName(rs.getString("full_name"));
-                user.setEmail(rs.getString("email"));
-                user.setPhone(rs.getString("phone"));
-                user.setStatus(rs.getString("status"));
-            }
-        } catch (SQLException e) {
-            System.err.println("Error getting user: " + e.getMessage());
+            String response = sendGet("action=getByUsername&username=" + encode(username));
+            if (response == null || response.trim().equals("null"))
+                return null;
+            return parseUser(response);
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            closeResources(rs, pstmt, conn);
+            return null;
         }
-        return user;
     }
+
     public boolean registerUser(User user) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
         try {
-            conn = DBConnection.getConnection();
-            String sql = "INSERT INTO users (username, password, role, full_name, email, phone, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, user.getUsername());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getRole());
-            pstmt.setString(4, user.getFullName());
-            pstmt.setString(5, user.getEmail());
-            pstmt.setString(6, user.getPhone());
-            pstmt.setString(7, "ACTIVE");
-            int rowsAffected = pstmt.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            System.err.println("Error registering user: " + e.getMessage());
+            String params = "action=register"
+                    + "&username=" + encode(user.getUsername())
+                    + "&password=" + encode(user.getPassword())
+                    + "&role=" + encode(user.getRole())
+                    + "&fullName=" + encode(user.getFullName())
+                    + "&email=" + encode(user.getEmail())
+                    + "&phone=" + encode(user.getPhone());
+            String response = sendPost(params);
+            return response.contains("\"success\":true");
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-        } finally {
-            closeResources(null, pstmt, conn);
         }
     }
+
+    public boolean updateUser(User user) {
+        try {
+            String params = "action=update"
+                    + "&userId=" + user.getUserId()
+                    + "&fullName=" + encode(user.getFullName())
+                    + "&email=" + encode(user.getEmail())
+                    + "&phone=" + encode(user.getPhone());
+            String response = sendPost(params);
+            return response.contains("\"success\":true");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public boolean emailExists(String email) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
         try {
-            conn = DBConnection.getConnection();
-            String sql = "SELECT COUNT(*) FROM users WHERE email = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, email);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            System.err.println("Error checking email: " + e.getMessage());
+            String response = sendGet("action=emailExists&email=" + encode(email));
+            return response.contains("true");
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            closeResources(rs, pstmt, conn);
+            return false;
         }
-        return false;
     }
+
     public boolean usernameExists(String username) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
         try {
-            conn = DBConnection.getConnection();
-            String sql = "SELECT COUNT(*) FROM users WHERE username = ?";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, username);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
-            }
-        } catch (SQLException e) {
-            System.err.println("Error checking username: " + e.getMessage());
+            String response = sendGet("action=usernameExists&username=" + encode(username));
+            return response.contains("true");
+        } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            closeResources(rs, pstmt, conn);
+            return false;
         }
-        return false;
     }
-    private void closeResources(ResultSet rs, PreparedStatement pstmt, Connection conn) {
+
+    public List<User> getAllUsers() {
         try {
-            if (rs != null) rs.close();
-            if (pstmt != null) pstmt.close();
-            if (conn != null) conn.close();
-        } catch (SQLException e) {
-            System.err.println("Error closing resources: " + e.getMessage());
+            String response = sendGet("action=getAll");
+            return parseUserList(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
         }
+    }
+
+    public int getTotalUsers() {
+        return getIntValue("action=totalUsers");
+    }
+
+    public int getAdminCount() {
+        return getIntValue("action=adminCount");
+    }
+
+    public int getStaffCount() {
+        return getIntValue("action=staffCount");
+    }
+
+    private int getIntValue(String params) {
+        try {
+            String response = sendGet(params);
+            String val = extractJsonValue(response, "value");
+            return (int) Double.parseDouble(val);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    private String sendGet(String params) throws Exception {
+        URL url = URI.create(BASE_URL + "?" + params).toURL();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setConnectTimeout(5000);
+        conn.setReadTimeout(5000);
+        return readResponse(conn);
+    }
+
+    private String sendPost(String params) throws Exception {
+        URL url = URI.create(BASE_URL).toURL();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.setConnectTimeout(5000);
+        conn.setReadTimeout(5000);
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(params.getBytes("UTF-8"));
+            os.flush();
+        }
+        return readResponse(conn);
+    }
+
+    private String readResponse(HttpURLConnection conn) throws Exception {
+        int status = conn.getResponseCode();
+        InputStream is;
+        if (status >= 400) {
+            is = conn.getErrorStream();
+        } else {
+            is = conn.getInputStream();
+        }
+
+        if (is == null)
+            return "";
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"))) {
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            return sb.toString();
+        } finally {
+            conn.disconnect();
+        }
+    }
+
+    private static String encode(String s) {
+        try {
+            return URLEncoder.encode(s != null ? s : "", "UTF-8");
+        } catch (Exception e) {
+            return s;
+        }
+    }
+
+    private User parseUser(String json) {
+        try {
+            User u = new User();
+            u.setUserId(Integer.parseInt(extractJsonValue(json, "userId")));
+            u.setUsername(extractJsonStringValue(json, "username"));
+            u.setPassword(extractJsonStringValue(json, "password"));
+            u.setRole(extractJsonStringValue(json, "role"));
+            u.setFullName(extractJsonStringValue(json, "fullName"));
+            u.setEmail(extractJsonStringValue(json, "email"));
+            u.setPhone(extractJsonStringValue(json, "phone"));
+            u.setStatus(extractJsonStringValue(json, "status"));
+            return u;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private List<User> parseUserList(String json) {
+        List<User> list = new ArrayList<>();
+        if (json == null || json.trim().equals("[]"))
+            return list;
+        json = json.trim();
+        if (json.startsWith("["))
+            json = json.substring(1);
+        if (json.endsWith("]"))
+            json = json.substring(0, json.length() - 1);
+        int depth = 0;
+        int start = 0;
+        for (int i = 0; i < json.length(); i++) {
+            char c = json.charAt(i);
+            if (c == '{')
+                depth++;
+            else if (c == '}') {
+                depth--;
+                if (depth == 0) {
+                    String obj = json.substring(start, i + 1).trim();
+                    if (obj.startsWith(","))
+                        obj = obj.substring(1).trim();
+                    User u = parseUser(obj);
+                    if (u != null)
+                        list.add(u);
+                    start = i + 1;
+                }
+            }
+        }
+        return list;
+    }
+
+    private String extractJsonValue(String json, String key) {
+        String search = "\"" + key + "\":";
+        int idx = json.indexOf(search);
+        if (idx < 0)
+            return "";
+        int start = idx + search.length();
+        if (json.charAt(start) == '"') {
+            int end = json.indexOf('"', start + 1);
+            return json.substring(start + 1, end);
+        } else {
+            int end = start;
+            while (end < json.length() && json.charAt(end) != ',' && json.charAt(end) != '}')
+                end++;
+            return json.substring(start, end).trim();
+        }
+    }
+
+    private String extractJsonStringValue(String json, String key) {
+        String search = "\"" + key + "\":\"";
+        int idx = json.indexOf(search);
+        if (idx < 0)
+            return "";
+        int start = idx + search.length();
+        int end = start;
+        while (end < json.length()) {
+            if (json.charAt(end) == '\\') {
+                end += 2;
+                continue;
+            }
+            if (json.charAt(end) == '"')
+                break;
+            end++;
+        }
+        String val = json.substring(start, end);
+        return val.replace("\\\"", "\"").replace("\\\\", "\\").replace("\\n", "\n").replace("\\r", "\r");
     }
 }

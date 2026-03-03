@@ -1,8 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <%@ page import="model.User" %>
+    <%@ page import="model.User, dao.ReservationDAO" %>
         <% if (session==null || session.getAttribute("user")==null) { response.sendRedirect("login.jsp"); return; } User
             user=(User) session.getAttribute("user"); String role=user.getRole(); if ("ADMIN".equals(role)) {
-            response.sendRedirect("adminDashboard.jsp"); return; } boolean isAdmin=false; %>
+            response.sendRedirect("adminDashboard.jsp"); return; } ReservationDAO reservationDAO=new ReservationDAO();
+            int activeBookings=reservationDAO.getActiveBookings(); int todayCheckIns=reservationDAO.getTodayCheckIns();
+            int todayCheckOuts=reservationDAO.getTodayCheckOuts(); int
+            bookedStandard=reservationDAO.getBookedCountByRoomType("Standard"); int
+            bookedDeluxe=reservationDAO.getBookedCountByRoomType("Deluxe"); int
+            bookedSuite=reservationDAO.getBookedCountByRoomType("Suite"); int availableStandard=Math.max(0, 10 -
+            bookedStandard); int availableDeluxe=Math.max(0, 8 - bookedDeluxe); int availableSuite=Math.max(0, 5 -
+            bookedSuite); %>
             <!DOCTYPE html>
             <html lang="en">
 
@@ -27,7 +34,9 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Active Bookings</h4>
-                                        <div class="number">0</div>
+                                        <div class="number">
+                                            <%= activeBookings %>
+                                        </div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -36,7 +45,9 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Today's Check-ins</h4>
-                                        <div class="number">0</div>
+                                        <div class="number">
+                                            <%= todayCheckIns %>
+                                        </div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -45,7 +56,9 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Today's Check-outs</h4>
-                                        <div class="number">0</div>
+                                        <div class="number">
+                                            <%= todayCheckOuts %>
+                                        </div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -79,15 +92,21 @@
                             <div class="info-grid">
                                 <div class="info-item">
                                     <div class="info-label">Standard</div>
-                                    <div class="info-value">12 Available</div>
+                                    <div class="info-value">
+                                        <%= availableStandard %> Available
+                                    </div>
                                 </div>
                                 <div class="info-item">
                                     <div class="info-label">Deluxe</div>
-                                    <div class="info-value">8 Available</div>
+                                    <div class="info-value">
+                                        <%= availableDeluxe %> Available
+                                    </div>
                                 </div>
                                 <div class="info-item">
                                     <div class="info-label">Suite</div>
-                                    <div class="info-value">3 Available</div>
+                                    <div class="info-value">
+                                        <%= availableSuite %> Available
+                                    </div>
                                 </div>
                             </div>
                             <div style="margin-top: 20px;">

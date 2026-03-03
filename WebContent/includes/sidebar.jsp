@@ -62,12 +62,6 @@
                                 </a>
                             </li>
                             <% } %>
-                                <li>
-                                    <a href="help.jsp" class="<%= currentPage.contains(" help") ? "active" : "" %>">
-                                        <span class="menu-icon"></span>
-                                        <span>Help</span>
-                                    </a>
-                                </li>
             </ul>
         </div>
         <style>

@@ -32,12 +32,6 @@
                                 <a href="login.jsp" class="btn btn-primary">Return to Login</a>
                             </div>
                         </div>
-                        <div
-                            style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color); font-size: 13px; color: var(--text-light);">
-                            <strong>Need Help?</strong><br>
-                            If this error persists, please contact your system administrator or visit the <a
-                                href="help.jsp" style="color: var(--secondary-blue);">Help page</a>.
-                        </div>
                     </div>
                 </div>
             </div>

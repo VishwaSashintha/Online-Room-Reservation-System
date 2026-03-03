@@ -59,6 +59,10 @@ echo Compiling DAOs...
 "!JAVA_HOME!\bin\javac.exe" -cp "!SERVLET_JAR!;!MYSQL_JAR!;WebContent\WEB-INF\classes" -d "WebContent\WEB-INF\classes" src\dao\*.java
 if !ERRORLEVEL! NEQ 0 goto :error
 
+echo Compiling Services...
+"!JAVA_HOME!\bin\javac.exe" -cp "!SERVLET_JAR!;!MYSQL_JAR!;WebContent\WEB-INF\classes" -d "WebContent\WEB-INF\classes" src\service\*.java
+if !ERRORLEVEL! NEQ 0 goto :error
+
 echo Compiling Controllers...
 "!JAVA_HOME!\bin\javac.exe" -cp "!SERVLET_JAR!;!MYSQL_JAR!;WebContent\WEB-INF\classes" -d "WebContent\WEB-INF\classes" src\controller\*.java
 if !ERRORLEVEL! NEQ 0 goto :error

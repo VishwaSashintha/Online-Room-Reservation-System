@@ -122,6 +122,8 @@
                                                                         reservation.getTotalBill()) %>
                                                                 </span></div>
                                                         </div>
+                                                        <input type="hidden" id="totalBill" name="totalBill"
+                                                            value="<%= reservation.getTotalBill() %>">
                                                         <div class="form-actions">
                                                             <button type="submit" class="btn btn-primary">Update
                                                                 Reservation</button>
@@ -157,6 +159,7 @@
                                 const total = diffDays * rate;
                                 document.getElementById('nightCount').textContent = diffDays;
                                 document.getElementById('totalBillAmount').textContent = total.toLocaleString(undefined, { minimumFractionDigits: 2 });
+                                document.getElementById('totalBill').value = total;
                             }
                         }
                     }

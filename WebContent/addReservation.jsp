@@ -86,9 +86,10 @@
                                                 <div class="total-bill">Total: LKR <span
                                                         id="totalBillAmount">0.00</span></div>
                                             </div>
+                                            <input type="hidden" id="totalBill" name="totalBill" value="0">
                                             <div class="form-actions">
                                                 <button type="submit" class="btn btn-primary">Add Reservation</button>
-                                                <button type="reset" class="btn btn-secondary">Clear Form</button>
+                                                <button type="reset" class="btn btn-secondary" onclick="document.getElementById('totalBill').value='0';">Clear Form</button>
                                             </div>
                                         </form>
                     </div>
@@ -118,8 +119,10 @@
                 <p>Rate per Night: <strong>LKR ${rate.toLocaleString()}</strong></p>
             `;
                             document.getElementById('totalBillAmount').textContent = total.toLocaleString(undefined, { minimumFractionDigits: 2 });
+                            document.getElementById('totalBill').value = total;
                         } else {
                             document.getElementById('billSummary').style.display = 'none';
+                            document.getElementById('totalBill').value = '0';
                         }
                     }
                 }

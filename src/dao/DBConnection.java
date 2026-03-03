@@ -1,19 +1,23 @@
 package dao;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 public class DBConnection {
-    private static final String URL = "jdbc:mysql://localhost:3306/oceanview_db";
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/oceanview_db";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
+
     public static Connection getConnection() throws SQLException {
         Connection connection = null;
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
-            System.err.println("CRITICAL: Database connection failed! Check if MySQL is running and credentials are correct.");
+            System.err.println(
+                    "CRITICAL: Database connection failed! Check if MySQL is running and credentials are correct.");
             System.err.println("URL: " + URL + " | User: " + USERNAME);
             System.err.println("Error Message: " + e.getMessage());
             e.printStackTrace();
@@ -25,6 +29,7 @@ public class DBConnection {
         }
         return connection;
     }
+
     public static void closeConnection(Connection connection) {
         if (connection != null) {
             try {
@@ -35,6 +40,7 @@ public class DBConnection {
             }
         }
     }
+
     public static boolean testConnection() {
         try (Connection conn = getConnection()) {
             return conn != null && !conn.isClosed();

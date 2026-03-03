@@ -1,8 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-    <%@ page import="model.User" %>
+    <%@ page import="model.User, dao.ReservationDAO, model.Reservation, java.util.List" %>
         <% if (session==null || session.getAttribute("user")==null) { response.sendRedirect("login.jsp"); return; } User
             user=(User) session.getAttribute("user"); String role=user.getRole(); if (!"ADMIN".equals(role)) {
-            response.sendRedirect("staffDashboard.jsp"); return; } boolean isAdmin=true; %>
+            response.sendRedirect("staffDashboard.jsp"); return; } ReservationDAO reservationDAO=new ReservationDAO();
+            int totalReservations=reservationDAO.getTotalReservations(); int
+            activeBookings=reservationDAO.getActiveBookings(); double totalRevenue=reservationDAO.getTotalRevenue();
+            List<Reservation> recentReservations = reservationDAO.getAllReservations();
+            %>
             <!DOCTYPE html>
             <html lang="en">
 
@@ -27,7 +31,9 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Total Reservations</h4>
-                                        <div class="number">0</div>
+                                        <div class="number">
+                                            <%= totalReservations %>
+                                        </div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -36,7 +42,9 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Active Bookings</h4>
-                                        <div class="number">0</div>
+                                        <div class="number">
+                                            <%= activeBookings %>
+                                        </div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -45,7 +53,9 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Available Rooms</h4>
-                                        <div class="number">23</div>
+                                        <div class="number">
+                                            <%= 23 - activeBookings < 0 ? 0 : 23 - activeBookings %>
+                                        </div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -54,7 +64,9 @@
                                 <div class="summary-card-content">
                                     <div class="summary-card-info">
                                         <h4>Total Revenue</h4>
-                                        <div class="number" style="font-size: 24px;">LKR 0</div>
+                                        <div class="number" style="font-size: 24px;">LKR <%= String.format("%,.0f",
+                                                totalRevenue) %>
+                                        </div>
                                     </div>
                                     <div class="summary-card-icon"></div>
                                 </div>
@@ -72,14 +84,39 @@
                                             <th>Guest Name</th>
                                             <th>Room Type</th>
                                             <th>Check-in</th>
-                                            <th>Status</th>
+                                            <th>Check-out</th>
+                                            <th>Total Bill</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td colspan="5" style="text-align: center; padding: 20px;">No recent
-                                                reservations found</td>
-                                        </tr>
+                                        <% if (recentReservations==null || recentReservations.isEmpty()) { %>
+                                            <tr>
+                                                <td colspan="6" style="text-align: center; padding: 20px;">No
+                                                    reservations found</td>
+                                            </tr>
+                                            <% } else { int displayCount=0; for (Reservation r : recentReservations) {
+                                                if (displayCount>= 10) break;
+                                                %>
+                                                <tr>
+                                                    <td>
+                                                        <%= r.getReservationId() %>
+                                                    </td>
+                                                    <td>
+                                                        <%= r.getGuestName() %>
+                                                    </td>
+                                                    <td>
+                                                        <%= r.getRoomType() %>
+                                                    </td>
+                                                    <td>
+                                                        <%= r.getCheckIn() %>
+                                                    </td>
+                                                    <td>
+                                                        <%= r.getCheckOut() %>
+                                                    </td>
+                                                    <td>LKR <%= String.format("%,.2f", r.getTotalBill()) %>
+                                                    </td>
+                                                </tr>
+                                                <% displayCount++; } } %>
                                     </tbody>
                                 </table>
                             </div>
@@ -93,14 +130,14 @@
                                     <div class="quick-action-icon"></div>
                                     <div class="quick-action-text">
                                         <strong>Manage Users</strong>
-                                        <small>System access & roles</small>
+                                        <small>System access &amp; roles</small>
                                     </div>
                                 </a>
                                 <a href="reports.jsp" class="quick-action-btn">
                                     <div class="quick-action-icon"></div>
                                     <div class="quick-action-text">
                                         <strong>System Reports</strong>
-                                        <small>Revenue & Analytics</small>
+                                        <small>Revenue &amp; Analytics</small>
                                     </div>
                                 </a>
                             </div>
