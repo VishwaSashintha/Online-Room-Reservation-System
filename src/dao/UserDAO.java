@@ -116,6 +116,8 @@ public class UserDAO {
         try {
             String response = sendGet(params);
             String val = extractJsonValue(response, "value");
+            if (val == null || val.trim().isEmpty())
+                return 0;
             return (int) Double.parseDouble(val);
         } catch (Exception e) {
             e.printStackTrace();

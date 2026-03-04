@@ -48,13 +48,7 @@
                             </a>
                         </li>
                         <% if (sidebarIsAdmin) { %>
-                            <li>
-                                <a href="manageUsers.jsp" class="<%= currentPage.contains(" manageUsers") ? "active"
-                                    : "" %>">
-                                    <span class="menu-icon"></span>
-                                    <span>Manage Users</span>
-                                </a>
-                            </li>
+
                             <li>
                                 <a href="reports.jsp" class="<%= currentPage.contains(" reports") ? "active" : "" %>">
                                     <span class="menu-icon"></span>

@@ -22,6 +22,14 @@
                         <div class="alert alert-error">
                             <strong>Error:</strong>
                             <%= errorMessage %>
+                                <% if (exception !=null) { %>
+                                    <hr>
+                                    <strong>StackTrace:</strong>
+                                    <pre style="white-space: pre-wrap; font-size: 11px; margin-top: 8px;">
+                                    <%= exception.toString() %>
+                                    <% exception.printStackTrace(new java.io.PrintWriter(out)); %>
+                                </pre>
+                                    <% } %>
                         </div>
                         <div style="margin-top: 24px;">
                             <p style="color: var(--text-light); margin-bottom: 16px;">
