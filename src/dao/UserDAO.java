@@ -11,8 +11,7 @@ import java.util.List;
 
 public class UserDAO {
 
-    private static final String BASE_URL = "http://localhost:8080/Online-Room-Reservation-System/api/users";
-
+private static final String BASE_URL = "http://localhost:8080/RoomReservation/api/users";
     public User authenticateUser(String username, String password) {
         try {
             String response = sendGet("action=authenticate&username=" + encode(username)
