@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ReservationDAO {
 
-   private static final String BASE_URL = "http://localhost:8080/RoomReservation/api/reservations";
+    private static final String BASE_URL = "http://localhost:8080/Online-Room-Reservation-System/api/reservations";
 
     public boolean addReservation(Reservation reservation) {
         try {

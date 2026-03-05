@@ -41,6 +41,14 @@
                                 <h2>Manage System Users</h2>
                                 <p>View and manage staff and administrator accounts</p>
                             </div>
+                            <button class="btn btn-primary" onclick="openAddUserModal()">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" style="margin-right: 8px;">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Add New User
+                            </button>
                         </div>
 
                         <% if (successMessage !=null) { %>
@@ -201,6 +209,66 @@
 
 
 
+                <!-- Add User Modal -->
+                <div id="addUserModal" class="modal">
+                    <div class="modal-content" style="max-width: 500px;">
+                        <div class="modal-header">
+                            <h3>Add New System User</h3>
+                            <span class="close" onclick="closeAddUserModal()">&times;</span>
+                        </div>
+                        <form action="AddUserServlet" method="POST">
+                            <div
+                                style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #dee2e6;">
+                                <h5 style="margin-top: 0; margin-bottom: 10px; color: #495057;">Admin Verification</h5>
+                                <div class="form-group">
+                                    <label for="adminUsername">Admin Username</label>
+                                    <input type="text" id="adminUsername" name="adminUsername" required
+                                        placeholder="Your current username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="adminPassword">Admin Password</label>
+                                    <input type="password" id="adminPassword" name="adminPassword" required
+                                        placeholder="Your current password">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="username">New Username</label>
+                                <input type="text" id="username" name="username" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">New Password</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="fullName">Full Name</label>
+                                <input type="text" id="fullName" name="fullName">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="text" id="phone" name="phone">
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role</label>
+                                <select id="role" name="role">
+                                    <option value="STAFF">Staff</option>
+                                    <option value="ADMIN">Administrator</option>
+                                </select>
+                            </div>
+                            <div class="form-actions" style="margin-top: 20px;">
+                                <button type="submit" class="btn btn-primary">Create User</button>
+                                <button type="button" class="btn btn-secondary"
+                                    onclick="closeAddUserModal()">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Edit User Modal -->
                 <div id="editUserModal" class="modal">
                     <div class="modal-content" style="max-width: 500px;">
                         <div class="modal-header">
@@ -210,12 +278,9 @@
                         <form action="UpdateUserServlet" method="POST">
                             <input type="hidden" id="editUserId" name="userId">
                             <div class="form-group">
-                                <label for="editUsername">Username</label>
-                                <input type="text" id="editUsername" name="username" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="editPassword">Password</label>
-                                <input type="text" id="editPassword" name="password" required>
+                                <label for="editUsername">Username (Read-Only)</label>
+                                <input type="text" id="editUsername" name="username" readonly
+                                    style="background-color: #f1f3f5; cursor: not-allowed;">
                             </div>
                             <div class="form-group">
                                 <label for="editFullName">Full Name</label>
@@ -240,19 +305,23 @@
 
                 <script>
 
+                    function openAddUserModal() {
+                        document.getElementById('addUserModal').style.display = 'flex';
+                    }
+                    function closeAddUserModal() {
+                        document.getElementById('addUserModal').style.display = 'none';
+                    }
                     function handleEditClick(btn) {
                         var id = btn.getAttribute('data-userid');
                         var username = btn.getAttribute('data-username');
-                        var password = btn.getAttribute('data-password');
                         var fullName = btn.getAttribute('data-fullname');
                         var email = btn.getAttribute('data-email');
                         var phone = btn.getAttribute('data-phone');
-                        openEditUserModal(id, username, password, fullName, email, phone);
+                        openEditUserModal(id, username, fullName, email, phone);
                     }
-                    function openEditUserModal(id, username, password, fullName, email, phone) {
+                    function openEditUserModal(id, username, fullName, email, phone) {
                         document.getElementById('editUserId').value = id;
                         document.getElementById('editUsername').value = username;
-                        document.getElementById('editPassword').value = password;
                         document.getElementById('editFullName').value = fullName;
                         document.getElementById('editEmail').value = email;
                         document.getElementById('editPhone').value = phone;

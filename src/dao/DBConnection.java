@@ -16,12 +16,11 @@ public class DBConnection {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
-            System.err.println(
-                    "CRITICAL: Database connection failed! Check if MySQL is running and credentials are correct.");
+            System.err.println("Database connection failed. Please ensure MySQL is running.");
             e.printStackTrace();
             throw e;
         } catch (ClassNotFoundException e) {
-            System.err.println("ERROR: MySQL JDBC Driver not found!");
+            System.err.println("MySQL JDBC Driver not found.");
             e.printStackTrace();
             throw new SQLException("Database driver not found", e);
         }

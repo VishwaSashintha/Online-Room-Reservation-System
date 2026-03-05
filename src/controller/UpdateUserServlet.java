@@ -26,20 +26,23 @@ public class UpdateUserServlet extends HttpServlet {
         try {
             int userId = Integer.parseInt(request.getParameter("userId"));
             String username = request.getParameter("username");
-            String password = request.getParameter("password");
             String fullName = request.getParameter("fullName");
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
 
+            UserService userService = new UserService();
+            // Fetch existing user to preserve the password since it's not in the edit form
+            User existingUser = userService.getUserByUsername(username);
+            String existingPassword = (existingUser != null) ? existingUser.getPassword() : "";
+
             User userToUpdate = new User();
             userToUpdate.setUserId(userId);
             userToUpdate.setUsername(username);
-            userToUpdate.setPassword(password);
+            userToUpdate.setPassword(existingPassword);
             userToUpdate.setFullName(fullName);
             userToUpdate.setEmail(email);
             userToUpdate.setPhone(phone);
 
-            UserService userService = new UserService();
             boolean success = userService.updateUser(userToUpdate);
 
             if (success) {
@@ -48,7 +51,7 @@ public class UpdateUserServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Failed to update user.");
             }
         } catch (Exception e) {
-            request.setAttribute("errorMessage", "Invalid server response or data casting error.");
+            request.setAttribute("errorMessage", "An error occurred: " + e.getMessage());
         }
 
         request.getRequestDispatcher("manageUsers.jsp").forward(request, response);

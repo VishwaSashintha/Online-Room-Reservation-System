@@ -23,28 +23,43 @@ public class AddUserServlet extends HttpServlet {
             return;
         }
 
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String fullName = request.getParameter("fullName");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String role = request.getParameter("role");
+        try {
+            String adminUsername = request.getParameter("adminUsername");
+            String adminPassword = request.getParameter("adminPassword");
 
-        User newUser = new User();
-        newUser.setUsername(username);
-        newUser.setPassword(password);
-        newUser.setFullName(fullName);
-        newUser.setEmail(email);
-        newUser.setPhone(phone);
-        newUser.setRole(role);
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            String fullName = request.getParameter("fullName");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String role = request.getParameter("role");
 
-        UserService userService = new UserService();
-        boolean success = userService.registerUser(newUser);
+            UserService userService = new UserService();
 
-        if (success) {
-            request.setAttribute("successMessage", "User added successfully!");
-        } else {
-            request.setAttribute("errorMessage", "Failed to add user. Username or email might already exist.");
+            // Security Validation: Verify admin credentials
+            User verifiedAdmin = userService.authenticateUser(adminUsername, adminPassword);
+            if (verifiedAdmin == null || !"ADMIN".equals(verifiedAdmin.getRole())
+                    || !verifiedAdmin.getUsername().equals(currentUser.getUsername())) {
+                request.setAttribute("errorMessage", "Admin verification failed. Incorrect username or password.");
+            } else {
+                User newUser = new User();
+                newUser.setUsername(username);
+                newUser.setPassword(password);
+                newUser.setFullName(fullName);
+                newUser.setEmail(email);
+                newUser.setPhone(phone);
+                newUser.setRole(role);
+
+                boolean success = userService.registerUser(newUser);
+
+                if (success) {
+                    request.setAttribute("successMessage", "User added successfully!");
+                } else {
+                    request.setAttribute("errorMessage", "Failed to add user. Username or email might already exist.");
+                }
+            }
+        } catch (Exception e) {
+            request.setAttribute("errorMessage", "An error occurred: " + e.getMessage());
         }
 
         request.getRequestDispatcher("manageUsers.jsp").forward(request, response);
