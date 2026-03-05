@@ -25,12 +25,16 @@ public class UpdateUserServlet extends HttpServlet {
 
         try {
             int userId = Integer.parseInt(request.getParameter("userId"));
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
             String fullName = request.getParameter("fullName");
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
 
             User userToUpdate = new User();
             userToUpdate.setUserId(userId);
+            userToUpdate.setUsername(username);
+            userToUpdate.setPassword(password);
             userToUpdate.setFullName(fullName);
             userToUpdate.setEmail(email);
             userToUpdate.setPhone(phone);

@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-    // FIX: Added useSSL=false and serverTimezone=UTC to stop the driver from crashing
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/oceanview_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
@@ -17,7 +16,8 @@ public class DBConnection {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
         } catch (SQLException e) {
-            System.err.println("CRITICAL: Database connection failed! Check if MySQL is running and credentials are correct.");
+            System.err.println(
+                    "CRITICAL: Database connection failed! Check if MySQL is running and credentials are correct.");
             e.printStackTrace();
             throw e;
         } catch (ClassNotFoundException e) {

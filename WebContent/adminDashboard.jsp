@@ -126,13 +126,7 @@
                                 <h3>Admin Management</h3>
                             </div>
                             <div class="quick-actions">
-                                <a href="manageUsers.jsp" class="quick-action-btn">
-                                    <div class="quick-action-icon"></div>
-                                    <div class="quick-action-text">
-                                        <strong>Manage Users</strong>
-                                        <small>System access &amp; roles</small>
-                                    </div>
-                                </a>
+
                                 <a href="reports.jsp" class="quick-action-btn">
                                     <div class="quick-action-icon"></div>
                                     <div class="quick-action-text">

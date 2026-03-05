@@ -107,6 +107,8 @@ public class UserWebService extends HttpServlet {
                 case "update": {
                     User user = new User();
                     user.setUserId(Integer.parseInt(request.getParameter("userId")));
+                    user.setUsername(request.getParameter("username"));
+                    user.setPassword(request.getParameter("password"));
                     user.setFullName(request.getParameter("fullName"));
                     user.setEmail(request.getParameter("email"));
                     user.setPhone(request.getParameter("phone"));

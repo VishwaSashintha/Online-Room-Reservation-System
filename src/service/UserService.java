@@ -4,10 +4,6 @@ import dao.UserDAO;
 import model.User;
 import java.util.List;
 
-/**
- * UserService now acts as the distributed bridge.
- * It routes all requests through the UserDAO (API Client) to the Web Service.
- */
 public class UserService {
 
     private UserDAO userDAO = new UserDAO();
@@ -52,7 +48,6 @@ public class UserService {
         return userDAO.updateUser(user);
     }
 
-    // JSON Utility methods for the Web Service to use
     public static String escapeJson(String s) {
         if (s == null)
             return "";

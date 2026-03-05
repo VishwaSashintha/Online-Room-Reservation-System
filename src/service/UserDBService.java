@@ -155,11 +155,14 @@ public class UserDBService {
         PreparedStatement pstmt = null;
         try {
             conn = DBConnection.getConnection();
-            pstmt = conn.prepareStatement("UPDATE users SET full_name=?, email=?, phone=? WHERE user_id=?");
-            pstmt.setString(1, user.getFullName());
-            pstmt.setString(2, user.getEmail());
-            pstmt.setString(3, user.getPhone());
-            pstmt.setInt(4, user.getUserId());
+            pstmt = conn.prepareStatement(
+                    "UPDATE users SET username=?, password=?, full_name=?, email=?, phone=? WHERE user_id=?");
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getFullName());
+            pstmt.setString(4, user.getEmail());
+            pstmt.setString(5, user.getPhone());
+            pstmt.setInt(6, user.getUserId());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
